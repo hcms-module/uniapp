@@ -39,5 +39,9 @@ this.$request('home.index').then(res => {
     console.log('err_res', err_res)
 })
 ```
+
+### 部署上线
+默认模块中的uniapp代码是将编译后的代码隐藏的，如果你需要部署h5项目上线的，可以在 `.gitignore`取消忽略，这样就可以将编译后的代码提交上去。
+
 ### 应用名称
 默认应用名称是`nuiapp`这个决定路由的访问，可以在`manifest.json`修改"应用名称"来改变访问的url：`http://127.0.0.1:9501/uniapp/`。根据业务需要可以将应用名称留空，但是需要修改 `UniappController` 的路由。
