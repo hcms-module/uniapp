@@ -54,7 +54,8 @@ for (let index in api_list) {
 	if (modular_name_match) {
 		let modular_name = modular_name_match[1]
 		for (let api_name in api_item) {
-			_api[`${modular_name}.${api_name}`] = {
+			let _api_name = `${modular_name}.${api_name}`.toLowerCase()
+			_api[_api_name] = {
 				...api_item[api_name]
 			}
 		}
@@ -85,7 +86,8 @@ for (let index in routes) {
 	if (modular_name_match) {
 		let modular_name = modular_name_match[1]
 		for (let page_name in route_item) {
-			_route[`${modular_name}.${page_name}`] = {
+			let route_name = `${modular_name}.${page_name}`.toLowerCase()
+			_route[`${route_name}`] = {
 				...route_item[page_name],
 				url: `/pages/${modular_name}/page/${route_item[page_name]['include'] || page_name}/${page_name}`
 			}
@@ -102,6 +104,7 @@ for (let index in routes) {
 
 const _nav = (route_name, query = {}, open_type = '') => {
 	return new Promise((resolve, reject) => {
+		route_name = route_name.toLowerCase()
 		//加入点击防抖，防止卡顿时候出现多次跳转
 		tool.throttle(() => {
 			// 判断是否为后退

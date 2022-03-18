@@ -7,7 +7,6 @@
 
 			</view>
 		</view>
-
 		<view class="selection">
 			<view class="label">Vuex</view>
 			<view>
@@ -19,13 +18,13 @@
 			<view class="label">路由跳转</view>
 			<view>
 				<view style="margin-top: 20rpx;">
-					<button @click="$nav('home.demo')">Demo</button>
+					<button @click="$nav('Home.Demo')">Demo</button>
 				</view>
 				<view style="margin-top: 20rpx;">
-					<button @click="$nav('home.demo-child')">Demo Child</button>
+					<button @click="$nav('home.DemoChild')">Demo Child</button>
 				</view>
-				<view style="margin-top: 20rpx;">
-					<button @click="$nav('demo.index')">Demo 模块 index</button>
+				<view v-for="(item,index) in button_list" :key="index" style="margin-top: 20rpx;">
+					<button @click="$nav(item.url)">{{item.name}}</button>
 				</view>
 			</view>
 		</view>
@@ -40,7 +39,15 @@
 	} from 'vuex'
 	export default {
 		data() {
-			return {}
+			return {
+				button_list: [{
+					name: 'Demo Index',
+					url: 'Demo.Index'
+				}, {
+					name: '微信授权与登录',
+					url: 'Demo.WxLogin'
+				}]
+			}
 		},
 		computed: {
 			...mapState('home', ['index_number'])
@@ -51,7 +58,7 @@
 				this.setIndexNumber(this.index_number + 1)
 			},
 			getRequest() {
-				this.$request('home.index').then(res => {
+				this.$request('Home.Index').then(res => {
 					// console.log('res', res)
 					uni.showToast({
 						title: '请求成功'

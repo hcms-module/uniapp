@@ -2,7 +2,6 @@ import {
 	apis
 } from "@/pages/index.js"
 
-import Request from './luch-request'
 import Config from '../config.js'
 import CodeHandle from './handle/code-handle.js'
 
@@ -14,6 +13,8 @@ let getCommonHeader = () => {
 }
 
 export const request = async (api_name, data = {}, options = {}) => {
+	//api名称不区分大小写
+	api_name = api_name.toLowerCase()
 	let api = apis[api_name]
 	if (api) {
 		let method = (api['method'] || "GET").toUpperCase()
@@ -28,39 +29,21 @@ export const request = async (api_name, data = {}, options = {}) => {
 			...(api['header'] || {}),
 			...header,
 		}
-
 		//参数
 		data = {
 			...(api['params'] || {}),
 			...data
 		}
-		let url = api['url'] || ''
+		let url = Config.getBaseUrl() + (api['url'] || '')
 		//请求全局配置
 		let request_config = {
 			url,
+			data,
 			header,
 			dataType: 'json',
-			method
+			method,
 		}
-		if (method === 'GET') {
-			request_config = {
-				...request_config,
-				...{
-					params: data
-				}
-			}
-		} else {
-			request_config = {
-				...request_config,
-				data
-			}
-		}
-
-		let http_request = new Request({
-			baseURL: Config.getBaseUrl(),
-			responseType: "json"
-		})
-		let res = await http_request.request(request_config).catch(errorFunction)
+		let res = await uni.request(request_config).catch(errorFunction)
 		let {
 			code = 200
 		} = res.data
@@ -70,7 +53,7 @@ export const request = async (api_name, data = {}, options = {}) => {
 			...CodeHandle,
 			...code_handle
 		}
-		if (typeof code_handle[code] === 'function') {
+		if (code_handle[code] && typeof code_handle[code] === 'function') {
 			let handle_res = await code_handle[code](res.data, {
 				api_name,
 				data,
@@ -81,11 +64,10 @@ export const request = async (api_name, data = {}, options = {}) => {
 				throw res.data
 			}
 		}
-
 		return res.data
-		console.log('api', api)
 	} else {
 		console.error('找不到该api')
+		throw "找不到该api"
 	}
 }
 

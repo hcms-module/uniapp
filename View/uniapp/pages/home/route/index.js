@@ -1,7 +1,7 @@
 export default {
-	home: {},
-	demo: {},
-	"demo-child": {
-		include: "demo"
+	Index: {},
+	Demo: {},
+	DemoChild: {
+		include: "Demo"
 	}
 }

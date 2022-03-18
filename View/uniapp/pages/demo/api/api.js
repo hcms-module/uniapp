@@ -1,8 +1,14 @@
 export default {
-	demo: {
-		url: "/uniapp/test/index",
+	WxLogin: {
+		url: "/wechat/mini/login",
 		method: "GET",
-		params: {}, //请求默认携带参数，调用传参会被覆盖
+		params: {},
 		header: {}
 	},
+	WxPhone: {
+		url: "/wechat/mini/phone",
+		method: "GET",
+		params: {},
+		header: {}
+	}
 }
