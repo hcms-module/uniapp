@@ -10,5 +10,11 @@ export default {
 		method: "GET",
 		params: {},
 		header: {}
-	}
+	},
+	WxSubscribe: {
+		url: "/wechat/mini/subscribe",
+	},
+	WxUniform: {
+		url: "/wechat/mini/uniform",
+	},
 }

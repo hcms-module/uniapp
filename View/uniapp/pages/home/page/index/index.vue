@@ -44,8 +44,8 @@
 					name: 'Demo Index',
 					url: 'Demo.Index'
 				}, {
-					name: '微信授权与登录',
-					url: 'Demo.WxLogin'
+					name: '微信Api',
+					url: 'Demo.WxApi'
 				}]
 			}
 		},

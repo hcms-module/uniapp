@@ -27,7 +27,7 @@
 		}
 
 	}, {
-		"path": "pages/demo/page/WxLogin/WxLogin",
+		"path": "pages/demo/page/WxApi/WxApi",
 		"style": {
 			"navigationBarTitleText": "微信授权与登录",
 			"enablePullDownRefresh": false

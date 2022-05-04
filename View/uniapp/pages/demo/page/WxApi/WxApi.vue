@@ -6,6 +6,9 @@
 		<view class="button-row">
 			<button open-type="getPhoneNumber" @getphonenumber="phone">获取手机号码</button>
 		</view>
+		<view class="button-row">
+			<button @click="subscribeEvent">订阅消息</button>
+		</view>
 	</view>
 </template>
 
@@ -17,6 +20,19 @@
 			};
 		},
 		methods: {
+			async subscribeEvent() {
+				//订阅模板消息
+				let res = await uni.requestSubscribeMessage({
+					tmplIds: [
+						// 'I6TIKudPRah_gqWl7ib2rAOF8W99vl0K9d5yG50mtG8',
+						// 'PnGfLvOuM96-ZcBrTAGw9oe7htpBFqBovDfEjIMcuNk'
+					]
+				}).catch(err => console.error())
+				//发送订阅消息
+				// await this.$request('Demo.WxSubscribe', {}).catch(err => console.error())
+				//发送统一模板消息
+				// await this.$request('Demo.WxUniform', {}).catch(err => console.error())
+			},
 			async phone(e) {
 				let {
 					detail = {}

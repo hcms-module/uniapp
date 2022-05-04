@@ -25,13 +25,12 @@ class UniappController
      */
     public function test(ResponseInterface $response, RequestInterface $request)
     {
-//        $response->withStatus(500);
         return $response->json(['msg' => "ok", 'data' => $request->getQueryParams(), 'code' => 200]);
     }
 
     /**
      * vue3编译之后放在asset文件夹
-     * @GetMapping(path="assets/{file_name}")
+     * @GetMapping(path="assets/{file_name:.+}")
      */
     public function assets($file_name, ResponseInterface $response)
     {
@@ -41,17 +40,8 @@ class UniappController
     }
 
     /**
-     * @GetMapping(path="static/js/{file_name}")
-     */
-    public function staticJs($file_name, ResponseInterface $response)
-    {
-        $file_path = BASE_PATH . '/app/Application/Uniapp/View/uniapp/unpackage/dist/build/h5/static/js/' . $file_name;
-
-        return $response->download($file_path);
-    }
-
-    /**
-     * @GetMapping(path="static/{file_name}")
+     * 静态资源文件
+     * @GetMapping(path="static/{file_name:.+}")
      */
     public function static($file_name, ResponseInterface $response)
     {
@@ -61,11 +51,11 @@ class UniappController
     }
 
     /**
-     * 渲染单页应用的index.html，做全局通配 [{id:.+}]
+     * 渲染单页应用的index.html，做全局通配 [{route:.+}]
      * @View()
-     * @GetMapping(path="/uniapp/[{id:.+}]")
+     * @GetMapping(path="/uniapp/[{route:.+}]")
      */
-    public function index()
+    public function index($route = '')
     {
         return RenderParam::display('unpackage/dist/build/h5/index')
             ->setLayout(false);
