@@ -7,25 +7,26 @@ namespace App\Application\Uniapp\Controller;
 use App\Annotation\View;
 use App\Application\Admin\Lib\RenderParam;
 use App\Application\Uniapp\Middleware\CorsMiddleware;
+use App\Controller\AbstractController;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\RequestMapping;
-use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 
 /**
  * @Controller(prefix="/uniapp")
  */
-class UniappController
+class UniappController extends AbstractController
 {
     /**
+     * 跨域请求
      * @Middleware(CorsMiddleware::class)
      * @RequestMapping(path="test/index")
      */
-    public function test(ResponseInterface $response, RequestInterface $request)
+    public function test()
     {
-        return $response->json(['msg' => "ok", 'data' => $request->getQueryParams(), 'code' => 200]);
+        return $this->returnSuccessJson($this->request->getQueryParams());
     }
 
     /**
@@ -57,6 +58,7 @@ class UniappController
      */
     public function index($route = '')
     {
+        // route 为当前访问的路由
         return RenderParam::display('unpackage/dist/build/h5/index')
             ->setLayout(false);
     }

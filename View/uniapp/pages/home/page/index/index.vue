@@ -41,9 +41,6 @@
 		data() {
 			return {
 				button_list: [{
-					name: 'Demo Index',
-					url: 'Demo.Index'
-				}, {
 					name: '微信Api',
 					url: 'Demo.WxApi'
 				}]

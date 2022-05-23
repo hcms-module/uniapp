@@ -20,20 +20,40 @@
 		}
 
 	}, {
-		"path": "pages/demo/page/Index/Index",
-		"style": {
-			"navigationBarTitleText": "",
-			"enablePullDownRefresh": false
-		}
-
-	}, {
 		"path": "pages/demo/page/WxApi/WxApi",
 		"style": {
 			"navigationBarTitleText": "微信授权与登录",
 			"enablePullDownRefresh": false
 		}
 
+	}, {
+		"path": "pages/home/page/People/People",
+		"style": {
+			"navigationBarTitleText": "",
+			"enablePullDownRefresh": false
+		}
+
 	}],
+	"tabBar": {
+		"color": "#666",
+		"backgroundColor": "#fff",
+		"selectedColor": "#3291F8",
+		"borderStyle": "black",
+		"list": [{
+				"text": "首页",
+				"pagePath": "pages/home/page/Index/Index",
+				"iconPath": "static/tabs/10.png",
+				"selectedIconPath": "static/tabs/11.png"
+			},
+			{
+				"text": "我的",
+				"pagePath": "pages/home/page/People/People",
+				"iconPath": "static/tabs/30.png",
+				"selectedIconPath": "static/tabs/31.png"
+			}
+		],
+		"position": "bottom"
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

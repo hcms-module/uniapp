@@ -1,6 +1,6 @@
 <template>
 	<view>
-		Demo index
+		People
 	</view>
 </template>
 
@@ -8,13 +8,12 @@
 	export default {
 		data() {
 			return {
-			}
-		},
-		methods: {
+
+			};
 		}
 	}
 </script>
 
-<style>
+<style lang="scss">
 
 </style>

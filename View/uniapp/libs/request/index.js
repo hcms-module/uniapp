@@ -7,7 +7,9 @@ import CodeHandle from './handle/code-handle.js'
 
 let getCommonHeader = () => {
 	//获取公共的header，这里用来加入登录凭证
+	// let login_token = uni.getStorageSync('login_token')
 	return {
+		// 'login-token': login_token,
 		...(Config['header'] || {})
 	}
 }
@@ -35,18 +37,37 @@ export const request = async (api_name, data = {}, options = {}) => {
 			...data
 		}
 		let url = Config.getBaseUrl() + (api['url'] || '')
-		//请求全局配置
-		let request_config = {
-			url,
-			data,
-			header,
-			dataType: 'json',
-			method,
+		let res = null
+		console.log('res', method)
+		if (method === 'UPLOAD') {
+			//上传配置
+			let request_config = {
+				url,
+				filePath: data.file,
+				name: data.file_name || 'file',
+				formData: data,
+				header
+			}
+			res = await uni.uploadFile(request_config).catch(errorFunction)
+			if (typeof res.data === 'string') {
+				res.data = JSON.parse(res.data)
+			}
+		} else {
+			//请求全局配置
+			let request_config = {
+				url,
+				data,
+				header,
+				dataType: 'json',
+				method,
+			}
+			res = await uni.request(request_config).catch(errorFunction)
 		}
-		let res = await uni.request(request_config).catch(errorFunction)
+
+
 		let {
 			code = 200
-		} = res.data
+		} = (res.data || {})
 
 		//获取处理方法
 		code_handle = {
@@ -59,10 +80,12 @@ export const request = async (api_name, data = {}, options = {}) => {
 				data,
 				options
 			})
-			if (!handle_res) {
+			if (handle_res === false) {
 				//如果处理返回false，就需要抛出异常
 				throw res.data
 			}
+			console.log(handle_res)
+			return handle_res
 		}
 		return res.data
 	} else {
