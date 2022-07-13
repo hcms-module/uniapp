@@ -23,7 +23,10 @@ class CorsMiddleware implements MiddlewareInterface
          * @var ResponseInterface $response
          */
         $response = Context::get(ResponseInterface::class);
-        $response = $response->withHeader('Access-Control-Allow-Origin', '*');
+        $response = $response->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Credentials', 'true')
+            //根据实际情况增加header，如果是传json 需要加 Content-Type
+            ->withHeader('Access-Control-Allow-Headers', 'Content-Type');
 
         Context::set(ResponseInterface::class, $response);
 

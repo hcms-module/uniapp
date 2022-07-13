@@ -4,7 +4,7 @@ import {
 
 import Config from '../config.js'
 import CodeHandle from './handle/code-handle.js'
-
+import CryptoJS from "crypto-js";
 let getCommonHeader = () => {
 	//获取公共的header，这里用来加入登录凭证
 	// let login_token = uni.getStorageSync('login_token')
@@ -12,6 +12,15 @@ let getCommonHeader = () => {
 		// 'login-token': login_token,
 		...(Config['header'] || {})
 	}
+}
+
+let getDecrypt = (data) => {
+	let key = CryptoJS.enc.Utf8.parse(Config.encode_key);
+	let decrypted = CryptoJS.AES.decrypt(data, key, {
+		mode: CryptoJS.mode.ECB,
+		padding: CryptoJS.pad.Pkcs7
+	}).toString(CryptoJS.enc.Utf8);
+	return JSON.parse(decrypted)
 }
 
 export const request = async (api_name, data = {}, options = {}) => {
@@ -64,30 +73,37 @@ export const request = async (api_name, data = {}, options = {}) => {
 			res = await uni.request(request_config).catch(errorFunction)
 		}
 
-
 		let {
 			code = 200
 		} = (res.data || {})
 
+		let response = res.data
+		let {
+			is_encrypt = false
+		} = response
+		if (is_encrypt) {
+			//已经加密，需要解密
+			response = getDecrypt(response.data)
+		}
 		//获取处理方法
 		code_handle = {
 			...CodeHandle,
 			...code_handle
 		}
 		if (code_handle[code] && typeof code_handle[code] === 'function') {
-			let handle_res = await code_handle[code](res.data, {
+			let handle_res = await code_handle[code](response, {
 				api_name,
 				data,
 				options
 			})
 			if (handle_res === false) {
 				//如果处理返回false，就需要抛出异常
-				throw res.data
+				throw response
 			}
-			console.log(handle_res)
+			// console.log(handle_res)
 			return handle_res
 		}
-		return res.data
+		return response
 	} else {
 		console.error('找不到该api')
 		throw "找不到该api"

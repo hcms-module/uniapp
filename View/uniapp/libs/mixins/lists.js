@@ -1,6 +1,7 @@
 export default {
 	data() {
 		return {
+			is_init_loading: true,
 			data_list: [],
 			per_page: 20,
 			last_page: 0,
@@ -28,7 +29,7 @@ export default {
 			this.page = current_page
 		}
 	},
-	mounted() {
+	onLoad() {
 		if (this.is_init_loading) {
 			this.GetList()
 		}

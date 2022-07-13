@@ -1,3 +1,4 @@
+
 export default {
 	env: 'dev',
 	host: {
@@ -7,7 +8,9 @@ export default {
 	// 公共请求头
 	header: {},
 	//项目版本号
-	version: "0.1.0",
+	version: "0.1.1",
+	encode_key: '2c1dc1975775ee38',
+
 	getBaseUrl() {
 		return this.host[this.env] || '/'
 	}

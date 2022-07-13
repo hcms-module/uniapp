@@ -16,6 +16,7 @@
 	/*每个页面公共css */
 	/* #ifndef APP-NVUE */
 	// @import '@/static/customicons.css';
+  @import './static/iconfont.css';
 	/* #endif */
 
 	// 设置整个项目的背景色
