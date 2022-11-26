@@ -47,7 +47,6 @@ export const request = async (api_name, data = {}, options = {}) => {
 		}
 		let url = Config.getBaseUrl() + (api['url'] || '')
 		let res = null
-		console.log('res', method)
 		if (method === 'UPLOAD') {
 			//上传配置
 			let request_config = {
@@ -72,11 +71,6 @@ export const request = async (api_name, data = {}, options = {}) => {
 			}
 			res = await uni.request(request_config).catch(errorFunction)
 		}
-
-		let {
-			code = 200
-		} = (res.data || {})
-
 		let response = res.data
 		let {
 			is_encrypt = false
@@ -85,6 +79,9 @@ export const request = async (api_name, data = {}, options = {}) => {
 			//已经加密，需要解密
 			response = getDecrypt(response.data)
 		}
+		let {
+			code = 200
+		} = (response || {})
 		//获取处理方法
 		code_handle = {
 			...CodeHandle,
