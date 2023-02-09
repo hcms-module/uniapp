@@ -14,16 +14,14 @@ use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\RequestMapping;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 
-/**
- * @Controller(prefix="/uniapp")
- */
+#[Controller(prefix: "/uniapp")]
 class UniappController extends AbstractController
 {
     /**
-     * 跨域请求
-     * @Middleware(CorsMiddleware::class)
-     * @RequestMapping(path="test/index")
+     * 跨域请求(部署在同一个域名下也可以不用跨域设置)
      */
+    #[Middleware(CorsMiddleware::class)]
+    #[RequestMapping(path: "test/index")]
     public function test()
     {
         return $this->returnSuccessJson($this->request->getQueryParams());
@@ -31,8 +29,8 @@ class UniappController extends AbstractController
 
     /**
      * vue3编译之后放在asset文件夹
-     * @GetMapping(path="assets/{file_name:.+}")
      */
+    #[GetMapping(path: "assets/{file_name:.+}")]
     public function assets($file_name, ResponseInterface $response)
     {
         $file_path = BASE_PATH . '/app/Application/Uniapp/View/uniapp/unpackage/dist/build/h5/assets/' . $file_name;
@@ -42,8 +40,8 @@ class UniappController extends AbstractController
 
     /**
      * 静态资源文件
-     * @GetMapping(path="static/{file_name:.+}")
      */
+    #[GetMapping(path: "static/{file_name:.+}")]
     public function static($file_name, ResponseInterface $response)
     {
         $file_path = BASE_PATH . '/app/Application/Uniapp/View/uniapp/unpackage/dist/build/h5/static/' . $file_name;
@@ -53,10 +51,19 @@ class UniappController extends AbstractController
 
     /**
      * 渲染单页应用的index.html，做全局通配 [{route:.+}]
-     * @View()
-     * @GetMapping(path="/uniapp/[{route:.+}]")
      */
-    public function index($route = '')
+    #[View]
+    #[GetMapping(path: "/uniapp/[{route:.+}]")]
+    public function indexAll($route = '')
+    {
+        // route 为当前访问的路由
+        return RenderParam::display('unpackage/dist/build/h5/index')
+            ->setLayout(false);
+    }
+
+    #[View]
+    #[GetMapping(path: "/uniapp")]
+    public function index()
     {
         // route 为当前访问的路由
         return RenderParam::display('unpackage/dist/build/h5/index')
