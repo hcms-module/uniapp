@@ -7,28 +7,6 @@ import {
 	request
 } from '@/libs/request/index.js'
 
-// #ifndef VUE3
-import Vue from 'vue'
-import App from './App'
-import Vuex from 'vuex'
-Vue.prototype.$nav = nav
-Vue.prototype.$t = tool
-Vue.prototype.$request = request
-Vue.config.productionTip = false
-Vue.use(Vuex)
-Vue.prototype.$store = new Vuex.Store({
-	modules: store
-})
-
-App.mpType = 'app'
-const app = new Vue({
-	...App
-})
-app.$mount()
-// #endif
-
-
-// #ifdef VUE3
 
 import {
 	createSSRApp
@@ -50,4 +28,3 @@ export function createApp() {
 		app
 	}
 }
-// #endif

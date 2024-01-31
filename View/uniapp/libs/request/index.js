@@ -7,9 +7,9 @@ import CodeHandle from './handle/code-handle.js'
 import CryptoJS from "crypto-js";
 let getCommonHeader = () => {
 	//获取公共的header，这里用来加入登录凭证
-	// let login_token = uni.getStorageSync('login_token')
+	let login_token = uni.getStorageSync('token')
 	return {
-		// 'login-token': login_token,
+		'Authorization': `Bearer ` + login_token,
 		...(Config['header'] || {})
 	}
 }

@@ -109,7 +109,7 @@ const _nav = (route_name, query = {}, open_type = '') => {
 		tool.throttle(() => {
 			// 判断是否为后退
 			if (route_name === 'back' || open_type === 'navigateBack') {
-				const delta = JSON.stringify(query) === JSON.stringify({}) ? 1 : query
+				const delta = 1
 				uni.navigateBack({
 					delta,
 					success: () => {

@@ -5,26 +5,20 @@
 	</view>
 </template>
 
-<script>
+<script setup>
 	import {
-		mapState,
-		mapMutations
+		useStore
 	} from 'vuex'
-	export default {
-		data() {
-			return {
+	import {
+		computed
+	} from 'vue'
 
-			};
-		},
-		computed: {
-			...mapState('home', ['index_number'])
-		},
-		methods: {
-			...mapMutations('home', ['setIndexNumber']),
-			addEvent() {
-				this.setIndexNumber(this.index_number + 1)
-			}
-		}
+	const store = useStore()
+	const index_number = computed(() => {
+		return store.state.home.index_number
+	})
+	const addEvent = () => {
+		store.commit("home/setIndexNumber", index_number.value + 1)
 	}
 </script>
 

@@ -12,59 +12,58 @@
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
+<script setup>
+	import {
+		onLoad
+	} from '@dcloudio/uni-app'
+	import {
+		request
+	} from '@/libs/request/index.js'
+	onLoad(async () => {
 
-			};
-		},
-		methods: {
-			async subscribeEvent() {
-				//订阅模板消息
-				let res = await uni.requestSubscribeMessage({
-					tmplIds: [
-						// 'I6TIKudPRah_gqWl7ib2rAOF8W99vl0K9d5yG50mtG8',
-						// 'PnGfLvOuM96-ZcBrTAGw9oe7htpBFqBovDfEjIMcuNk'
-					]
-				}).catch(err => console.error())
-				//发送订阅消息
-				// await this.$request('Demo.WxSubscribe', {}).catch(err => console.error())
-				//发送统一模板消息
-				// await this.$request('Demo.WxUniform', {}).catch(err => console.error())
-			},
-			async phone(e) {
-				let {
-					detail = {}
-				} = e
-				// console.log('@getphonenumber', detail)
-				let {
-					errMsg,
-					iv = '',
-					encryptedData = '',
-					code = ''
-				} = detail
+	})
+	const login = async () => {
+		let res = await uni.login({}).catch(err => {})
+		let {
+			code = ''
+		} = res
+		let result = await request('Demo.WxLogin', {
+			code
+		}).then().catch(err => {})
+		//这里会获取token，来作为登录凭证
+		console.log('result', result)
+	}
 
-				let result = await this.$request('Demo.WxPhone', {
-					code
-				}).then().catch(err => {})
-				console.log('result', result)
-			},
-			async login() {
-				let res = await uni.login({}).catch(err => {})
-				let {
-					code = ''
-				} = res
-				let result = await this.$request('Demo.WxLogin', {
-					code
-				}).then().catch(err => {})
-				//这里会获取token，来作为登录凭证
-				console.log('result', result)
-			}
-		},
-		async onLoad() {
+	const phone = async (e) => {
+		let {
+			detail = {}
+		} = e
+		// console.log('@getphonenumber', detail)
+		let {
+			errMsg,
+			iv = '',
+			encryptedData = '',
+			code = ''
+		} = detail
 
-		}
+		let result = await request('Demo.WxPhone', {
+			code
+		}).then().catch(err => {})
+		// console.log('result', result)
+	}
+
+	const subscribeEvent = async () => {
+		//订阅模板消息
+		let res = await uni.requestSubscribeMessage({
+			tmplIds: [
+				// 'I6TIKudPRah_gqWl7ib2rAOF8W99vl0K9d5yG50mtG8',
+				// 'PnGfLvOuM96-ZcBrTAGw9oe7htpBFqBovDfEjIMcuNk'
+			]
+		}).catch(err => console.error())
+		//发送订阅消息
+		// await request('Demo.WxSubscribe', {}).catch(err => console.error())
+		//发送统一模板消息
+		// await request('Demo.WxUniform', {}).catch(err => console.error())
 	}
 </script>
 

@@ -4,7 +4,6 @@
 			<view class="label">Request</view>
 			<view>
 				<button @click="getRequest">发送请求</button>
-
 			</view>
 		</view>
 		<view class="selection">
@@ -28,47 +27,85 @@
 				</view>
 			</view>
 		</view>
-
 	</view>
 </template>
 
-<script>
+<script setup>
 	import {
-		mapState,
-		mapMutations
+		useStore,
 	} from 'vuex'
-	export default {
-		data() {
-			return {
-				button_list: [{
-					name: '微信Api',
-					url: 'Demo.WxApi'
-				}]
-			}
-		},
-		computed: {
-			...mapState('home', ['index_number'])
-		},
-		methods: {
-			...mapMutations('home', ['setIndexNumber']),
-			addEvent() {
-				this.setIndexNumber(this.index_number + 1)
-			},
-			getRequest() {
-				this.$request('Home.Index').then(res => {
-					// console.log('res', res)
-					uni.showToast({
-						title: '请求成功'
-					})
-				}).catch(err_res => {
-					//业务错误
-					console.log('err_res', err_res)
-				})
-			}
-		},
-		onLoad() {}
+	import {
+		ref,
+		computed
+	} from 'vue'
+	import {
+		onLoad
+	} from '@dcloudio/uni-app'
+	import {
+		request
+	} from '@/libs/request/index.js'
+	const button_list = ref([{
+		name: '微信Api',
+		url: 'Demo.WxApi'
+	}])
+	onLoad(() => {
+		console.log("onLoad") // 0
+	})
+	const store = useStore()
+	const index_number = computed(() => {
+		return store.state.home.index_number
+	})
+
+	const addEvent = () => {
+		store.commit("home/setIndexNumber", index_number.value + 1)
+	}
+	const getRequest = () => {
+		request('Home.Index').then(res => {
+			// console.log('res', res)
+			uni.showToast({
+				title: '请求成功'
+			})
+		}).catch(err_res => {
+			//业务错误
+			console.log('err_res', err_res)
+		})
 	}
 </script>
+// import {
+// mapMutations,
+// mapState,
+// } from 'vuex'
+// export default {
+// data() {
+// return {
+// button_list: [{
+// name: '微信Api',
+// url: 'Demo.WxApi'
+// }]
+// }
+// },
+// computed: {
+// ...mapState('home', ['index_number'])
+// },
+// methods: {
+// ...mapMutations('home', ['.,']),
+// addEvent() {
+// this.setIndexNumber(this.index_number + 1)
+// },
+// getRequest() {
+// this.$request('Home.Index').then(res => {
+// // console.log('res', res)
+// uni.showToast({
+// title: '请求成功'
+// })
+// }).catch(err_res => {
+// //业务错误
+// console.log('err_res', err_res)
+// })
+// }
+// },
+// onLoad() {}
+// }
 
 <style lang="scss" scoped>
 	.selection {
