@@ -6,6 +6,7 @@ namespace App\Application\Uniapp\Controller;
 
 use App\Annotation\View;
 use App\Application\Admin\Lib\RenderParam;
+use App\Application\Uniapp\Controller\RequestParam\TestRequestParam;
 use App\Application\Uniapp\Middleware\CorsMiddleware;
 use App\Controller\AbstractController;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -24,6 +25,13 @@ class UniappController extends AbstractController
     #[RequestMapping(path: "test/index")]
     public function test()
     {
+        if ($this->request->isMethod('POST')) {
+            $test_request = new TestRequestParam();
+            $test_request->validatedThrowMessage();
+
+            return $this->returnSuccessJson(['param1' => $test_request->getParam1()]);
+        }
+
         return $this->returnSuccessJson($this->request->getQueryParams());
     }
 

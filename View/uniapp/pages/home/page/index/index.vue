@@ -2,8 +2,11 @@
 	<view style="padding: 0 40rpx;">
 		<view class="selection">
 			<view class="label">Request</view>
-			<view>
-				<button @click="getRequest">发送请求</button>
+			<view style="margin-top: 20rpx;">
+				<button @click="getRequest">发送GET请求</button>
+			</view>
+			<view style="margin-top: 20rpx;">
+				<button @click="postRequest">发送POST请求</button>
 			</view>
 		</view>
 		<view class="selection">
@@ -62,6 +65,21 @@
 	const getRequest = () => {
 		request('Home.Index').then(res => {
 			// console.log('res', res)
+			uni.showToast({
+				title: '请求成功'
+			})
+		}).catch(err_res => {
+			//业务错误
+			console.log('err_res', err_res)
+		})
+	}
+	const postRequest = () => {
+		request('Home.IndexPost', {
+			param1: "paramValue1"
+		}, {
+			is_encrypt_param: true
+		}).then(res => {
+			console.log('res', res)
 			uni.showToast({
 				title: '请求成功'
 			})

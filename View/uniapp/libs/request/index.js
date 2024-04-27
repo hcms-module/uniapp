@@ -14,6 +14,20 @@ let getCommonHeader = () => {
 	}
 }
 
+
+
+let getEncrypt = (data) => {
+	let key = CryptoJS.enc.Utf8.parse(Config.encode_key);
+	let encrypted_data = CryptoJS.AES.encrypt(JSON.stringify(data), key, {
+		mode: CryptoJS.mode.ECB,
+		padding: CryptoJS.pad.Pkcs7
+	}).toString();
+	return {
+		data: encrypted_data,
+		is_encrypt: true
+	}
+}
+
 let getDecrypt = (data) => {
 	let key = CryptoJS.enc.Utf8.parse(Config.encode_key);
 	let decrypted = CryptoJS.AES.decrypt(data, key, {
@@ -30,8 +44,7 @@ export const request = async (api_name, data = {}, options = {}) => {
 	if (api) {
 		let method = (api['method'] || "GET").toUpperCase()
 		let {
-			header = {},
-				code_handle = {}
+			header = {}, code_handle = {}, is_encrypt_param = false
 		} = options
 
 		// 请求header优先级：传入>api>公共
@@ -44,6 +57,9 @@ export const request = async (api_name, data = {}, options = {}) => {
 		data = {
 			...(api['params'] || {}),
 			...data
+		}
+		if (is_encrypt_param && Config.env !== 'dev') {
+			data = getEncrypt(data)
 		}
 		let url = Config.getBaseUrl() + (api['url'] || '')
 		let res = null
