@@ -8,7 +8,9 @@ let _store = {}
 
 // #ifdef VUE3
 let store_list =
-	import.meta.globEager('./**/store/index.js')
+	import.meta.glob('./**/store/index.js', {
+		eager: true
+	})
 // #endif
 
 // #ifndef VUE3
@@ -35,7 +37,9 @@ for (let index in store_list) {
 
 // #ifdef VUE3
 let api_list =
-	import.meta.globEager('./**/api/api.js')
+	import.meta.glob('./**/api/api.js', {
+		eager: true
+	})
 // #endif
 
 // #ifndef VUE3
@@ -68,7 +72,9 @@ for (let index in api_list) {
 
 // #ifdef VUE3
 let routes =
-	import.meta.globEager('./**/route/index.js')
+	import.meta.glob('./**/route/index.js', {
+		eager: true
+	})
 // #endif
 
 // #ifndef VUE3
@@ -109,7 +115,7 @@ const _nav = (route_name, query = {}, open_type = '') => {
 		tool.throttle(() => {
 			// 判断是否为后退
 			if (route_name === 'back' || open_type === 'navigateBack') {
-				const delta = 1
+				const delta = JSON.stringify(query) === JSON.stringify({}) ? 1 : query
 				uni.navigateBack({
 					delta,
 					success: () => {
